@@ -1,0 +1,47 @@
+{
+  "name": "smartbite-nutrition-agent",
+  "description": "SmartBite - AI-Powered Personalized Nutrition Agent web application built using Python Flask, HTML5, CSS3, and IBM Watsonx.ai with Granite models.",
+  "repository": "",
+  "keywords": [
+    "ibm-cloud",
+    "watsonx-ai",
+    "ibm-granite",
+    "nutrition-agent",
+    "diet-planner",
+    "flask",
+    "agentic-ai",
+    "aicte-2026"
+  ],
+  "env": {
+    "IBM_CLOUD_APIKEY": {
+      "description": "Your IBM Cloud API Key for Watsonx.ai access",
+      "required": true
+    },
+    "WATSONX_PROJECT_ID": {
+      "description": "Your IBM Watsonx Project ID",
+      "required": true
+    },
+    "WATSONX_REGION": {
+      "description": "Watsonx Region (e.g., us-south, au-syd, eu-de)",
+      "value": "us-south"
+    },
+    "WATSONX_MODEL_ID": {
+      "description": "IBM Granite Model ID",
+      "value": "ibm/granite-3-8b-instruct"
+    },
+    "USE_SIMULATION": {
+      "description": "Enable offline simulator fallback (true/false)",
+      "value": "true"
+    }
+  },
+  "scripts": {
+    "postdeploy": "python -m pip install -r requirements.txt"
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "image": "heroku/python"
+}

@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header animate-fade-in">
+    <div>
+        <h1 class="page-title">Personalized Nutrition Dashboard</h1>
+        <p class="page-subtitle">Welcome back, {{ profile.name if profile.name else 'Health Enthusiast' }}! Here is your daily overview.</p>
+    </div>
+    <div>
+        <span class="text-muted" style="font-size: 0.9rem;"><i class="far fa-calendar-alt"></i> Today, {{ today_date }}</span>
+    </div>
+</div>
+
+{% if not profile.name %}
+<!-- Warning alert when profile is not configured -->
+<div class="alert alert-custom d-flex align-items-center gap-3" role="alert">
+    <i class="fas fa-info-circle fa-lg"></i>
+    <div>
+        <strong>Your profile is incomplete!</strong> Set up your personal details to get calculated calorie targets and custom diet advice.
+        <a href="#profileSection" class="alert-link text-decoration-underline ms-2">Configure Profile</a>
+    </div>
+</div>
+{% endif %}
+
+<div class="row g-4 mb-4">
+    <!-- Daily Calorie Widget -->
+    <div class="col-lg-3 col-md-6">
+        <div class="glass-card widget-teal d-flex flex-column justify-content-between h-100">
+            <div>
+                <div class="widget-icon"><i class="fas fa-fire"></i></div>
+                <div class="widget-value">{{ targets.calories }} kcal</div>
+                <div class="widget-label">Target Intake</div>
+            </div>
+            <div class="text-muted mt-3" style="font-size: 0.8rem;">Adjusted for: <strong>{{ profile.goal if profile.goal else 'Default' }}</strong></div>
+        </div>
+    </div>
+    
+    <!-- Carbs Widget -->
+    <div class="col-lg-3 col-md-6">
+        <div class="glass-card widget-orange d-flex flex-column justify-content-between h-100">
+            <div>
+                <div class="widget-icon"><i class="fas fa-bread-slice"></i></div>
+                <div class="widget-value">{{ targets.carbs }}g</div>
+                <div class="widget-label">Carbohydrates</div>
+            </div>
+            <div class="progress-bar-container mt-3">
+                <div class="progress-fill fill-carbs" style="width: 50%;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Protein Widget -->
+    <div class="col-lg-3 col-md-6">
+        <div class="glass-card widget-green d-flex flex-column justify-content-between h-100">
+            <div>
+                <div class="widget-icon"><i class="fas fa-egg"></i></div>
+                <div class="widget-value">{{ targets.protein }}g</div>
+                <div class="widget-label">Protein Target</div>
+            </div>
+            <div class="progress-bar-container mt-3">
+                <div class="progress-fill fill-protein" style="width: 25%;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Fat Widget -->
+    <div class="col-lg-3 col-md-6">
+        <div class="glass-card widget-blue d-flex flex-column justify-content-between h-100">
+            <div>
+                <div class="widget-icon"><i class="fas fa-tint"></i></div>
+                <div class="widget-value">{{ targets.fat }}g</div>
+                <div class="widget-label">Healthy Fats</div>
+            </div>
+            <div class="progress-bar-container mt-3">
+                <div class="progress-fill fill-fat" style="width: 30%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <!-- BMI Calculator Card -->
+    <div class="col-md-6">
+        <div class="glass-card h-100">
+            <h3 class="mb-3 font-heading" style="font-size: 1.25rem;"><i class="fas fa-calculator text-primary me-2"></i> BMI & Weight Calculator</h3>
+            <p class="text-secondary mb-4" style="font-size: 0.9rem;">Calculate your Body Mass Index and identify your healthy weight category.</p>
+            
+            <div class="row g-3">
+                <div class="col-6">
+                    <label class="form-label" for="bmiWeight">Weight (kg)</label>
+                    <input type="number" id="bmiWeight" class="form-control" placeholder="e.g. 70" value="{{ profile.weight if profile.weight else '' }}">
+                </div>
+                <div class="col-6">
+                    <label class="form-label" for="bmiHeight">Height (cm)</label>
+                    <input type="number" id="bmiHeight" class="form-control" placeholder="e.g. 175" value="{{ profile.height if profile.height else '' }}">
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary w-100" id="btnCalcBmi"><i class="fas fa-check"></i> Calculate BMI</button>
+                </div>
+            </div>
+            
+            <div class="mt-4 p-3 rounded" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-secondary">Your BMI:</span>
+                    <span id="bmiResult" class="font-heading font-weight-bold text-white">--</span>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-secondary">Category:</span>
+                    <span id="bmiCategory" class="font-heading font-weight-bold text-white">--</span>
+                </div>
+                
+                <div class="bmi-visualizer">
+                    <div class="d-flex justify-content-between text-muted" style="font-size: 0.75rem;">
+                        <span>Under</span>
+                        <span>Normal</span>
+                        <span>Over</span>
+                        <span>Obese</span>
+                    </div>
+                    <div class="bmi-spectrum">
+                        <div class="bmi-indicator" id="bmiIndicator" style="left: 50%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Water Intake Widget -->
+    <div class="col-md-6">
+        <div class="glass-card h-100">
+            <h3 class="mb-3 font-heading" style="font-size: 1.25rem;"><i class="fas fa-glass-water text-primary me-2"></i> Hydration Tracker</h3>
+            <p class="text-secondary mb-4" style="font-size: 0.9rem;">Track your daily water intake. Target is **3000 ml** (3.0 Liters).</p>
+            
+            <div class="water-container mt-4 mb-4 justify-content-around">
+                <div class="water-visual">
+                    <div class="water-wave" id="waterWave" style="height: 0%;"></div>
+                </div>
+                <div class="text-center">
+                    <div class="font-heading text-white" style="font-size: 2.2rem; font-weight: 800;" id="waterIntake">0</div>
+                    <div class="text-muted" style="font-size: 0.85rem; text-transform: uppercase;">ml Consumed</div>
+                </div>
+                <div class="text-center">
+                    <div class="font-heading text-white" style="font-size: 2.2rem; font-weight: 800;" id="waterProgressPct">0%</div>
+                    <div class="text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Daily Progress</div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button class="btn btn-primary btn-water" id="btnAddWater" title="Add 250ml (One Glass)">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <div class="text-secondary mt-2" style="font-size: 0.8rem;">Click to log 1 glass (250 ml)</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Primary Profile Setup Form -->
+<div class="glass-card mb-4" id="profileSection">
+    <h3 class="mb-4 font-heading" style="font-size: 1.4rem;"><i class="fas fa-user-circle text-primary me-2"></i> Core Personal Profile</h3>
+    <p class="text-secondary mb-4" style="font-size: 0.9rem;">Submit your details to personalize your calorie recommendations and configure the AI Coach.</p>
+    
+    <form action="{{ url_for('update_profile') }}" method="POST">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label" for="profileName">Full Name</label>
+                <input type="text" id="profileName" name="name" class="form-control" placeholder="e.g. Shivaji" value="{{ profile.name if profile.name else '' }}" required>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label" for="profileAge">Age</label>
+                <input type="number" id="profileAge" name="age" class="form-control" placeholder="e.g. 25" value="{{ profile.age if profile.age else '' }}" required>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="profileGender">Gender</label>
+                <select id="profileGender" name="gender" class="form-select" required>
+                    <option value="male" {% if profile.gender == 'male' %}selected{% endif %}>Male</option>
+                    <option value="female" {% if profile.gender == 'female' %}selected{% endif %}>Female</option>
+                    <option value="other" {% if profile.gender == 'other' %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="profileGoal">Health Goal</label>
+                <select id="profileGoal" name="goal" class="form-select" required>
+                    <option value="weight loss" {% if profile.goal == 'weight loss' %}selected{% endif %}>Weight Loss</option>
+                    <option value="weight gain" {% if profile.goal == 'weight gain' %}selected{% endif %}>Weight Gain</option>
+                    <option value="maintenance" {% if profile.goal == 'maintenance' %}selected{% endif %}>Healthy Weight Maintenance</option>
+                    <option value="muscle building" {% if profile.goal == 'muscle building' %}selected{% endif %}>Muscle Building</option>
+                </select>
+            </div>
+            
+            <div class="col-md-3">
+                <label class="form-label" for="profileHeight">Height (cm)</label>
+                <input type="number" id="profileHeight" name="height" class="form-control" placeholder="e.g. 175" value="{{ profile.height if profile.height else '' }}" required>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="profileWeight">Weight (kg)</label>
+                <input type="number" id="profileWeight" name="weight" class="form-control" placeholder="e.g. 70" value="{{ profile.weight if profile.weight else '' }}" required>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="profileCuisine">Cuisine Preference</label>
+                <select id="profileCuisine" name="cuisine" class="form-select" required>
+                    <option value="indian" {% if profile.cuisine == 'indian' %}selected{% endif %}>Indian Cuisine</option>
+                    <option value="vegetarian" {% if profile.cuisine == 'vegetarian' %}selected{% endif %}>Pure Vegetarian (Indian)</option>
+                    <option value="south indian" {% if profile.cuisine == 'south indian' %}selected{% endif %}>South Indian Specialties</option>
+                    <option value="north indian" {% if profile.cuisine == 'north indian' %}selected{% endif %}>North Indian Specialties</option>
+                    <option value="global" {% if profile.cuisine == 'global' %}selected{% endif %}>Global / Continental</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="profileFood">Diet Preference</label>
+                <select id="profileFood" name="food_preference" class="form-select" required>
+                    <option value="veg" {% if profile.food_preference == 'veg' %}selected{% endif %}>Vegetarian</option>
+                    <option value="non-veg" {% if profile.food_preference == 'non-veg' %}selected{% endif %}>Non-Vegetarian</option>
+                    <option value="eggitarian" {% if profile.food_preference == 'eggitarian' %}selected{% endif %}>Eggitarian</option>
+                    <option value="vegan" {% if profile.food_preference == 'vegan' %}selected{% endif %}>Vegan</option>
+                </select>
+            </div>
+            
+            <div class="col-md-6">
+                <label class="form-label" for="profileMedical">Medical Conditions / Allergies</label>
+                <input type="text" id="profileMedical" name="medical_conditions" class="form-control" placeholder="e.g. Diabetes, Lactose Intolerance, None" value="{{ profile.medical_conditions if profile.medical_conditions else '' }}">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="profileLocation">Location (City, State, Country)</label>
+                <input type="text" id="profileLocation" name="location" class="form-control" placeholder="e.g. Pune, Maharashtra, India" value="{{ profile.location if profile.location else '' }}">
+            </div>
+            
+            <div class="col-12 text-end mt-4">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Profile Details</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

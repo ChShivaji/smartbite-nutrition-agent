@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header animate-fade-in">
+    <div>
+        <h1 class="page-title">Watsonx Integration Settings</h1>
+        <p class="page-subtitle">Configure your IBM Cloud platform keys, Watsonx workspace details, and AI Granite model options.</p>
+    </div>
+</div>
+
+{% if success_message %}
+<div class="alert alert-custom d-flex align-items-center gap-3" role="alert">
+    <i class="fas fa-check-circle fa-lg"></i>
+    <div>
+        <strong>Settings Saved Successfully!</strong> Your `.env` configuration has been updated.
+    </div>
+</div>
+{% endif %}
+
+<div class="row g-4">
+    <!-- Configuration Form -->
+    <div class="col-lg-7">
+        <div class="glass-card">
+            <h3 class="mb-4 font-heading" style="font-size: 1.25rem;"><i class="fas fa-key text-primary me-2"></i> Credentials Manager</h3>
+            
+            <form action="{{ url_for('save_settings') }}" method="POST">
+                <!-- Mode Switch -->
+                <div class="form-group mb-4 p-3 rounded" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);">
+                    <div class="form-check form-switch d-flex justify-content-between align-items-center p-0">
+                        <div>
+                            <label class="form-check-label fw-bold text-white" for="useSimulation">Enable Local Offline Simulation Mode</label>
+                            <div class="text-muted" style="font-size: 0.8rem; margin-top: 0.25rem;">Runs app locally using smart mock prompts. Turn OFF to use real IBM Watsonx.</div>
+                        </div>
+                        <input class="form-check-input ms-3" type="checkbox" id="useSimulation" name="use_simulation" value="true" style="width: 50px; height: 24px;" {% if config_data.use_simulation %}checked{% endif %}>
+                    </div>
+                </div>
+
+                <!-- API Key -->
+                <div class="form-group">
+                    <label class="form-label" for="ibmApiKey">IBM Cloud API Key</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0" style="border: 1px solid var(--glass-border); color: var(--text-secondary);"><i class="fas fa-lock"></i></span>
+                        <input type="password" id="ibmApiKey" name="ibm_apikey" class="form-control border-start-0" placeholder="e.g. wX4_o9uB1Rk-..." value="{{ config_data.ibm_apikey if config_data.ibm_apikey else '' }}" style="border: 1px solid var(--glass-border); border-top-right-radius: 12px; border-bottom-right-radius: 12px;">
+                    </div>
+                    <div class="text-muted mt-1" style="font-size: 0.75rem;">Create a key in your IBM Cloud console under IAM > API Keys.</div>
+                </div>
+                
+                <!-- Project ID -->
+                <div class="form-group">
+                    <label class="form-label" for="watsonxProjectId">Watsonx Project ID</label>
+                    <input type="text" id="watsonxProjectId" name="watsonx_project_id" class="form-control" placeholder="e.g. c39572b8-7c85-48b4-93c6-..." value="{{ config_data.watsonx_project_id if config_data.watsonx_project_id else '' }}">
+                    <div class="text-muted mt-1" style="font-size: 0.75rem;">Obtain from your Watsonx.ai Studio project General tab.</div>
+                </div>
+                
+                <div class="row g-3">
+                    <!-- Region -->
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="watsonxRegion">IBM Watsonx Region</label>
+                        <select id="watsonxRegion" name="watsonx_region" class="form-select">
+                            <option value="us-south" {% if config_data.watsonx_region == 'us-south' %}selected{% endif %}>Dallas (us-south)</option>
+                            <option value="au-syd" {% if config_data.watsonx_region == 'au-syd' %}selected{% endif %}>Sydney (au-syd)</option>
+                            <option value="eu-de" {% if config_data.watsonx_region == 'eu-de' %}selected{% endif %}>Frankfurt (eu-de)</option>
+                            <option value="jp-tok" {% if config_data.watsonx_region == 'jp-tok' %}selected{% endif %}>Tokyo (jp-tok)</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Model ID -->
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="watsonxModel">Granite Model ID</label>
+                        <select id="watsonxModel" name="watsonx_model_id" class="form-select">
+                            <option value="ibm/granite-3-8b-instruct" {% if config_data.watsonx_model_id == 'ibm/granite-3-8b-instruct' %}selected{% endif %}>Granite 3.0 8B Instruct</option>
+                            <option value="ibm/granite-13b-chat-v2" {% if config_data.watsonx_model_id == 'ibm/granite-13b-chat-v2' %}selected{% endif %}>Granite 13B Chat v2</option>
+                            <option value="ibm/granite-30b-instruct-v2" {% if config_data.watsonx_model_id == 'ibm/granite-30b-instruct-v2' %}selected{% endif %}>Granite 30B Instruct v2</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100 mt-3">
+                    <i class="fas fa-save"></i> Save Settings Configuration
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Instructions Sidebar -->
+    <div class="col-lg-5">
+        <div class="glass-card h-100">
+            <h3 class="mb-4 font-heading" style="font-size: 1.25rem;"><i class="fas fa-book text-primary me-2"></i> How to Get Keys</h3>
+            
+            <div class="d-flex flex-column gap-3" style="font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary);">
+                <div>
+                    <strong class="text-white">Step 1: Sign up / Log in</strong>
+                    <p class="m-0">Log in to your IBM Cloud platform at <a href="https://cloud.ibm.com/" target="_blank" class="text-info">cloud.ibm.com</a>.</p>
+                </div>
+                
+                <div>
+                    <strong class="text-white">Step 2: Create Watsonx Service</strong>
+                    <p class="m-0">Search for "watsonx.ai" in the catalog. Choose the <strong>Dallas (us-south)</strong> region, select the <strong>Lite Plan</strong> (Free), and click Create.</p>
+                </div>
+                
+                <div>
+                    <strong class="text-white">Step 3: Create Watsonx Project</strong>
+                    <p class="m-0">Launch Watsonx.ai Studio, select "New Project", give it a name, associate your machine learning service instance, and click Create.</p>
+                </div>
+                
+                <div>
+                    <strong class="text-white">Step 4: Copy Project ID</strong>
+                    <p class="m-0">Inside your project, navigate to the <strong>Manage</strong> tab > <strong>General</strong> section, and copy the <strong>Project ID</strong>.</p>
+                </div>
+                
+                <div>
+                    <strong class="text-white">Step 5: Create Cloud API Key</strong>
+                    <p class="m-0">In the IBM Cloud console top menu, go to <strong>Manage</strong> > <strong>Access (IAM)</strong> > <strong>API Keys</strong>. Click "Create an IBM Cloud API key", name it, copy the secret key, and paste it here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

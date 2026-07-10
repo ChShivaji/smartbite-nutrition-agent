@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header animate-fade-in">
+    <div>
+        <h1 class="page-title">AI Nutrition Coach</h1>
+        <p class="page-subtitle">Ask questions about diet plans, food nutrition, healthy recipe swaps, and fitness routines.</p>
+    </div>
+</div>
+
+<div class="glass-card chat-container">
+    <!-- Chat message viewport -->
+    <div class="chat-messages" id="chatMessages">
+        <!-- Agent Welcome message -->
+        <div class="message message-agent">
+            <p>Hello! I am your **SmartBite AI Nutrition Coach**, powered by **IBM Granite** models.</p>
+            <p>I can help you build dynamic meal plans, calculate macros, and suggest healthy Indian food alternatives. How can I assist you today?</p>
+            {% if profile.name %}
+            <p>I have loaded your profile: <strong>{{ profile.name }}</strong> (Age: {{ profile.age }}, Goal: {{ profile.goal }}, Diet: {{ profile.food_preference }}). I will customize my answers for your profile details.</p>
+            {% else %}
+            <p style="font-size: 0.85rem; color: var(--accent-orange);"><i class="fas fa-exclamation-triangle"></i> Tip: Go to the Dashboard to fill out your profile details so I can give you personalized advice!</p>
+            {% endif %}
+        </div>
+        
+        <!-- Typing indicator (hidden by default) -->
+        <div class="typing-indicator" id="typingIndicator" style="display: none;">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+        </div>
+    </div>
+    
+    <!-- Quick prompt shortcuts -->
+    <div class="quick-prompts">
+        {% if profile.name %}
+        <button class="btn-quick" data-prompt="Create a detailed 1-day Indian diet plan for weight loss for my profile.">
+            <i class="fas fa-calendar-day me-1"></i> Generate 1-Day Plan
+        </button>
+        {% else %}
+        <button class="btn-quick" data-prompt="Create a detailed 1-day Indian diet plan for weight loss (Male, 25 years old, 70kg, 175cm).">
+            <i class="fas fa-calendar-day me-1"></i> Weight Loss Diet Plan
+        </button>
+        {% endif %}
+        <button class="btn-quick" data-prompt="What are some healthy high-protein snacks in Indian cuisine?">
+            <i class="fas fa-egg me-1"></i> Indian Protein Snacks
+        </button>
+        <button class="btn-quick" data-prompt="How do I control my blood sugar levels through my diet?">
+            <i class="fas fa-notes-medical me-1"></i> Blood Sugar Control
+        </button>
+        <button class="btn-quick" data-prompt="Explain why swapping white rice for brown rice or quinoa is beneficial.">
+            <i class="fas fa-exchange-alt me-1"></i> Rice Swap benefits
+        </button>
+    </div>
+    
+    <!-- Chat text input area -->
+    <form id="chatForm" class="chat-input-area">
+        <input type="text" id="chatInput" class="chat-input" placeholder="Type your nutrition question here... (e.g. 'Is Paneer a good source of protein?')" autocomplete="off" required>
+        <button type="submit" class="btn btn-primary">
+            <span>Send</span> <i class="fas fa-paper-plane"></i>
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header animate-fade-in">
+    <div>
+        <h1 class="page-title">Smart Food Swaps</h1>
+        <p class="page-subtitle">Instantly compare unhealthy cravings with nutritious, delicious alternatives common in Indian households.</p>
+    </div>
+</div>
+
+<div class="glass-card mb-4">
+    <div class="d-flex align-items-center gap-3">
+        <i class="fas fa-search text-secondary" style="font-size: 1.2rem;"></i>
+        <input type="text" id="swapSearch" class="form-control border-0 bg-transparent p-0 text-white" placeholder="Search for foods or ingredients (e.g. 'Rice', 'Samosa', 'Bread')..." style="font-size: 1.1rem; box-shadow: none;">
+    </div>
+</div>
+
+<div class="row g-4" id="swapResults">
+    {% for key, swap in food_swaps.items() %}
+    <div class="col-lg-6 swap-comparison-card" data-name="{{ swap.unhealthy_name }}" data-swap="{{ swap.healthy_name }}">
+        <div class="glass-card h-100">
+            <h3 class="font-heading mb-3" style="font-size: 1.2rem; color: var(--accent-teal);">{{ swap.unhealthy_name }} to {{ swap.healthy_name }}</h3>
+            <p class="text-secondary mb-4" style="font-size: 0.85rem;">{{ swap.description }}</p>
+            
+            <div class="swap-comparison">
+                <!-- Craving Box -->
+                <div class="swap-box swap-box-bad">
+                    <span class="swap-badge swap-badge-bad">CRAVING</span>
+                    <div class="font-heading text-white fw-bold mb-2">{{ swap.unhealthy_name }}</div>
+                    <div class="text-white fw-extrabold mb-3" style="font-size: 1.4rem;">{{ swap.unhealthy_macros.calories }} <span style="font-size: 0.85rem;">kcal</span></div>
+                    
+                    <div class="mb-2" style="font-size: 0.8rem;">
+                        <div class="d-flex justify-content-between text-secondary"><span>Carbs</span> <span>{{ swap.unhealthy_macros.carbs }}g</span></div>
+                        <div class="progress-bar-container"><div class="progress-fill fill-carbs" style="width: {{ (swap.unhealthy_macros.carbs / 80) * 100 }}%;"></div></div>
+                    </div>
+                    <div class="mb-2" style="font-size: 0.8rem;">
+                        <div class="d-flex justify-content-between text-secondary"><span>Protein</span> <span>{{ swap.unhealthy_macros.protein }}g</span></div>
+                        <div class="progress-bar-container"><div class="progress-fill fill-protein" style="width: {{ (swap.unhealthy_macros.protein / 30) * 100 }}%;"></div></div>
+                    </div>
+                    <div style="font-size: 0.8rem;">
+                        <div class="d-flex justify-content-between text-secondary"><span>Fat</span> <span>{{ swap.unhealthy_macros.fat }}g</span></div>
+                        <div class="progress-bar-container"><div class="progress-fill fill-fat" style="width: {{ (swap.unhealthy_macros.fat / 30) * 100 }}%;"></div></div>
+                    </div>
+                </div>
+                
+                <!-- Center Icon -->
+                <div class="text-center">
+                    <i class="fas fa-arrow-right swap-arrow"></i>
+                </div>
+                
+                <!-- Healthy Swap Box -->
+                <div class="swap-box swap-box-good">
+                    <span class="swap-badge swap-badge-good">BETTER SWAP</span>
+                    <div class="font-heading text-white fw-bold mb-2">{{ swap.healthy_name }}</div>
+                    <div class="text-white fw-extrabold mb-3" style="font-size: 1.4rem;">{{ swap.healthy_macros.calories }} <span style="font-size: 0.85rem;">kcal</span></div>
+                    
+                    <div class="mb-2" style="font-size: 0.8rem;">
+                        <div class="d-flex justify-content-between text-secondary"><span>Carbs</span> <span>{{ swap.healthy_macros.carbs }}g</span></div>
+                        <div class="progress-bar-container"><div class="progress-fill fill-carbs" style="width: {{ (swap.healthy_macros.carbs / 80) * 100 }}%;"></div></div>
+                    </div>
+                    <div class="mb-2" style="font-size: 0.8rem;">
+                        <div class="d-flex justify-content-between text-secondary"><span>Protein</span> <span>{{ swap.healthy_macros.protein }}g</span></div>
+                        <div class="progress-bar-container"><div class="progress-fill fill-protein" style="width: {{ (swap.healthy_macros.protein / 30) * 100 }}%;"></div></div>
+                    </div>
+                    <div style="font-size: 0.8rem;">
+                        <div class="d-flex justify-content-between text-secondary"><span>Fat</span> <span>{{ swap.healthy_macros.fat }}g</span></div>
+                        <div class="progress-bar-container"><div class="progress-fill fill-fat" style="width: {{ (swap.healthy_macros.fat / 30) * 100 }}%;"></div></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-3 p-2 rounded text-center" style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.1); font-size: 0.8rem; color: var(--accent-green);">
+                <i class="fas fa-arrow-trend-down me-1"></i> Net Calorie Saving: <strong>{{ swap.unhealthy_macros.calories - swap.healthy_macros.calories }} kcal</strong>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
