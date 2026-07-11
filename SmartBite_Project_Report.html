@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Report - SmartBite: Personalized AI Nutrition Agent</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        h1, h2, h3, h4 {
+            font-family: Arial, sans-serif;
+            color: #0f172a;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 40px;
+            color: #555;
+        }
+        .meta-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        .meta-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        .meta-table td.label {
+            font-weight: bold;
+            background-color: #f8fafc;
+            width: 25%;
+        }
+        h2 {
+            border-bottom: 2px solid #0b57d0;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            font-size: 1.5rem;
+        }
+        h3 {
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        ul, ol {
+            margin-bottom: 15px;
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        .formula {
+            background-color: #f1f5f9;
+            padding: 15px;
+            border-left: 4px solid #0b57d0;
+            margin: 15px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            text-align: center;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        @media print {
+            body {
+                margin: 20px;
+                padding: 0;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+        .print-btn-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .btn-print {
+            background-color: #0b57d0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
+        .btn-print:hover {
+            background-color: #001d35;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="print-btn-container no-print">
+        <button class="btn-print" onclick="window.print()">Print to PDF / Save Report</button>
+    </div>
+
+    <h1>Project Synopsis & Report</h1>
+    <div class="subtitle">AICTE 2026 University Engagements - Agentic AI Domain</div>
+
+    <table class="meta-table">
+        <tr>
+            <td class="label">Project Title</td>
+            <td>SmartBite: Personalized AI Nutrition Agent</td>
+            <td class="label">Domain</td>
+            <td>Healthcare & Preventive Nutrition</td>
+        </tr>
+        <tr>
+            <td class="label">Technologies</td>
+            <td>IBM Cloud, IBM Watsonx.ai, Granite Models, Python Flask, HTML5/CSS3</td>
+            <td class="label">Author</td>
+            <td>Shivaji (University Student Candidate)</td>
+        </tr>
+    </table>
+
+    <h2>1. Introduction & Abstract</h2>
+    <p>
+        Good nutrition is the core pillar of human health and preventive healthcare. However, individuals face substantial challenges in personalizing diet regimes, tracking caloric values, and sourcing reliable metabolic metrics. Information is scattered, and one-size-fits-all nutritional advice often fails to account for individuals' unique age brackets, physiological metrics, and underlying medical conditions.
+    </p>
+    <p>
+        <strong>SmartBite</strong> is an intelligent, personalized AI-powered Nutrition Assistant designed to address these gaps. Powered by **IBM Watsonx.ai** and **IBM Granite models**, the system offers a complete dashboard featuring real-time health profile configurations, an interactive Body Mass Index (BMI) classifier, a water intake manager, searchable pantry food swaps, and a conversational AI Coach. The application enables individuals and families to autonomously formulate healthy, culturally inclusive diet paths.
+    </p>
+
+    <h2>2. Problem Statement</h2>
+    <p>
+        Academic and public health metrics indicate rising occurrences of chronic metabolic conditions (such as Type-II diabetes, hypertension, and obesity) in India. Managing these conditions requires close dietary vigilance. However, manual diet calculation is tedious and professional dietitian consulting is not scalable. Existing nutrition applications lack cultural sensitivity, fail to adapt suggestions dynamically, and do not integrate multi-profile tracking for families.
+    </p>
+
+    <h2>3. Proposed Solution</h2>
+    <p>
+        The developed system is a responsive web application built with a Flask backend and a modern glassmorphic frontend. It leverages <strong>IBM Granite Models</strong> to power a conversational agent optimized for Indian cuisine. The solution features:
+    </p>
+    <ul>
+        <li><strong>Caloric & Macro Estimations:</strong> Programmatic calculations using Mifflin-St Jeor formulas to establish BMR and TDEE based on user goals (Weight Loss, Weight Gain, Maintenance, and Muscle Building).</li>
+        <li><strong>Smart Pantry Food Swaps:</strong> A searchable index comparing high-calorie cravings (e.g., fried Samosa, White Rice) to nutrient-dense alternatives (e.g., Baked Cutlet, Brown Rice/Quinoa) with visual progress bars.</li>
+        <li><strong>Family Profile Support:</strong> Multi-profile session storage allows the calculations to scale to the entire household.</li>
+        <li><strong>Watsonx integration:</strong> A secure API gateway that generates IAM tokens and executes text-generation models, with a graceful offline simulator fallback for deployment flexibility.</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h2>4. Scientific Formulas & Calculation Methodology</h2>
+    <p>
+        SmartBite utilizes the Mifflin-St Jeor formula, widely considered the most accurate equation for predicting Basal Metabolic Rate (BMR) in healthy individuals.
+    </p>
+    
+    <h3>Basal Metabolic Rate (BMR)</h3>
+    <div class="formula">
+        Men: BMR = (10 &times; weight_kg) + (6.25 &times; height_cm) - (5 &times; age_years) + 5<br>
+        Women: BMR = (10 &times; weight_kg) + (6.25 &times; height_cm) - (5 &times; age_years) - 161
+    </div>
+
+    <h3>Total Daily Energy Expenditure (TDEE)</h3>
+    <p>To account for light daily physical activity, TDEE is computed as:</p>
+    <div class="formula">
+        TDEE = BMR &times; 1.375
+    </div>
+
+    <h3>Goal Adjustment</h3>
+    <ul>
+        <li><strong>Weight Loss:</strong> Deficit of 400 kcal per day (TDEE - 400, capped at a healthy minimum of 1200 kcal).</li>
+        <li><strong>Weight Gain / Muscle Building:</strong> Surplus of 300 to 400 kcal per day (TDEE + 300).</li>
+        <li><strong>Maintenance:</strong> Target equals TDEE.</li>
+    </ul>
+
+    <h2>5. Novelty, Uniqueness, and Commercial Viability</h2>
+    <ul>
+        <li><strong>Indian Cuisine Alignment:</strong> Tailored specifically to Indian diets, suggesting common staples (lentils, paneer bhurji, curd, ragi) and providing direct caloric comparisons.</li>
+        <li><strong>Offline-First Resilience:</strong> A dual-state backend allowing seamless testing in local classrooms via simulation without requiring active cloud bills, while maintaining direct IBM Watsonx API compatibility.</li>
+        <li><strong>Market Viability:</strong> Can be packaged as a corporate wellness portal, integrated with medical tracking software, or paired with hyperlocal grocery platforms.</li>
+    </ul>
+
+    <h2>6. Future Scope</h2>
+    <ol>
+        <li><strong>Wearable Telemetry Sync:</strong> Integration with Apple HealthKit or Google Fit to automatically adjust daily TDEE based on live steps and cardiovascular activity.</li>
+        <li><strong>Multilingual Voice Agents:</strong> Adding speech-to-text in regional Indian languages (Hindi, Marathi, Tamil) to make digital nutrition tips accessible to rural and informal workers.</li>
+    </ol>
+
+</body>
+</html>
